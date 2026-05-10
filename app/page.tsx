@@ -98,8 +98,9 @@ const EVENTS = [
 ];
 
 const TL_START_YEAR = 2020;
-const TL_NOW_YEAR = 2026;
-const TL_NOW_MONTH = 5;
+const now = new Date();
+const TL_NOW_YEAR = now.getFullYear();
+const TL_NOW_MONTH = now.getMonth() + 1;
 const MIN_H_PER_YEAR = 50;
 const H_PER_EVENT = 45;
 const TRACK_WIDTH = 10;
@@ -432,12 +433,12 @@ export default function Home() {
           <div className="flex flex-wrap gap-3 mb-8">
             <a href="/resume.pdf" download="Anurinth_Wichairum_Resume_2026.pdf"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium transition-colors">
-              ↓ download resume
+              ↓&#xFE0E; download resume
             </a>
             <a href="mailto:anurinth.w@gmail.com"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm transition-colors hover:border-orange-400"
               style={{ border: `0.5px solid ${borderColor}`, color: dark ? "#ccc" : "#444" }}>
-              ✉ get in touch
+              ✉&#xFE0E get in touch
             </a>
           </div>
           <div className="flex gap-5">
@@ -448,7 +449,7 @@ export default function Home() {
               <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
                 className="text-sm hover:text-orange-500 transition-colors"
                 style={{ color: subtleColor }}>
-                {s.label} ↗
+                {s.label} ↗&#xFE0E;
               </a>
             ))}
           </div>
@@ -522,7 +523,7 @@ export default function Home() {
               })}
 
               {/* Spine */}
-              <line x1={LEFT_AXIS} y1={40} x2={LEFT_AXIS} y2={totalHeight - 20}
+              <line x1={LEFT_AXIS} y1={10} x2={LEFT_AXIS} y2={totalHeight - 20}
                 stroke={borderColor} strokeWidth="1.5" />
 
               {/* Now line */}
@@ -541,7 +542,7 @@ export default function Home() {
               })()}
 
               {/* Divider */}
-              <line x1={LABEL_X - 16} y1={30} x2={LABEL_X - 16} y2={totalHeight - 20}
+              <line x1={LABEL_X - 16} y1={10} x2={LABEL_X - 16} y2={totalHeight - 20}
                 stroke={borderColor} strokeWidth="0.5" strokeDasharray="3 3" />
 
               {/* Events */}
@@ -597,7 +598,7 @@ export default function Home() {
                         fontSize: "12px", fill: isHovered ? ev.color : textColor,
                         fontFamily: "sans-serif", fontWeight: isHovered ? 500 : 400, dominantBaseline: "middle"
                       }}>
-                      {ev.title}{ev.href ? " ↗" : ""}
+                      {ev.title}{ev.href ? " ↗&#xFE0E;" : ""}
                     </text>
                     <text x={LABEL_X + 4} y={labelY + 20}
                       style={{ fontSize: "10px", fill: subtleColor, fontFamily: "sans-serif", dominantBaseline: "middle" }}>
@@ -689,7 +690,7 @@ export default function Home() {
                 <a key={s.label} href={s.href}
                   className="text-xs hover:text-orange-500 transition-colors"
                   style={{ color: subtleColor }}>
-                  {s.label} ↗
+                  {s.label} ↗&#xFE0E;
                 </a>
               ))}
             </div>
