@@ -17,7 +17,7 @@ const EVENTS = [
     id: "game-dev",
     title: "Game Programmer · Work & Travel USA",
     start: { year: 2022, month: 1 },
-    end: { year: 2022, month: 12 },
+    end: { year: 2023, month: 6 },
     color: "#EF9F27",
     href: null,
     track: 1,

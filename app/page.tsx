@@ -16,7 +16,7 @@ const EVENTS = [
     id: "game-dev",
     title: "Game Programmer",
     start: { year: 2022, month: 1 },
-    end: { year: 2023, month: 6 },
+    end: { year: 2023, month: 9 },
     color: "#EF9F27",
     href: null,
     track: 1,
@@ -33,7 +33,7 @@ const EVENTS = [
   {
     id: "graduated",
     title: "Graduated — Bangkok University",
-    start: { year: 2023, month: 6 },
+    start: { year: 2023, month: 9 },
     end: { year: 2023, month: 9 },
     color: "#1D9E75",
     href: null,
@@ -61,7 +61,7 @@ const EVENTS = [
   {
     id: "hotel-finance",
     title: "Financial Summary System — Hotel, Asoke",
-    start: { year: 2025, month: 11 },
+    start: { year: 2025, month: 10 },
     end: { year: 2025, month: 12 },
     color: "#D4537E",
     href: null,
@@ -387,10 +387,29 @@ export default function Home() {
                 </a>
               ))}
             </div>
-            <button onClick={() => setDark(!dark)}
-              className="flex items-center gap-2 text-xs px-3 py-1.5 rounded-full transition-colors hover:border-orange-400"
-              style={{ border: `0.5px solid ${borderColor}`, color: mutedColor, backgroundColor: "transparent" }}>
-              {dark ? "☀ light" : "☽ dark"}
+            <button
+              onClick={() => setDark(!dark)}
+              className="relative flex items-center transition-colors"
+              style={{
+                width: "52px", height: "28px",
+                backgroundColor: dark ? "#EA6C1E" : "#e8e4dc",
+                borderRadius: "14px",
+                border: "none",
+                padding: "3px",
+                cursor: "pointer",
+              }}
+            >
+              <div style={{
+                width: "22px", height: "22px",
+                borderRadius: "50%",
+                backgroundColor: dark ? "#0e0e0e" : "#ffffff",
+                transform: dark ? "translateX(24px)" : "translateX(0px)",
+                transition: "transform 0.2s ease",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: "12px",
+              }}>
+                {dark ? "🌙" : "☀️"}
+              </div>
             </button>
           </div>
         </nav>
