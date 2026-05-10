@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { Cpu, Gamepad2, Droplets, Container, Film, Sun, Moon } from "lucide-react";
 
 const EVENTS = [
   {
@@ -307,7 +308,7 @@ export default function Home() {
       tags: ["AWS", "Docker", "Terraform"],
       href: "https://github.com/anurinth-w/hybrid-ocr",
       status: "Complete",
-      icon: "⚙️",
+      icon: Cpu,
       iconBg: dark ? "#2a1a0a" : "#fff3e8",
     },
     {
@@ -316,7 +317,7 @@ export default function Home() {
       tags: ["Serverless", "React", "Cloudflare"],
       href: "https://github.com/anurinth-w/kayaman-shop",
       status: "Production",
-      icon: "🎮",
+      icon: Gamepad2,
       iconBg: dark ? "#2a1a0a" : "#fff3e8",
     },
     {
@@ -325,7 +326,7 @@ export default function Home() {
       tags: ["Go", "LINE API"],
       href: "https://github.com/anurinth-w/pwm-service",
       status: "In Progress",
-      icon: "💧",
+      icon: Droplets,
       iconBg: dark ? "#2a1a0a" : "#fff3e8",
     },
     {
@@ -334,7 +335,7 @@ export default function Home() {
       tags: ["K8s", "Prometheus", "Kustomize"],
       href: "https://github.com/anurinth-w/devops-assignment",
       status: "Complete",
-      icon: "☸️",
+      icon: Container,
       iconBg: dark ? "#2a1a0a" : "#fff3e8",
     },
     {
@@ -343,7 +344,7 @@ export default function Home() {
       tags: ["Go", "Docker", "CI/CD"],
       href: "https://github.com/anurinth-w/cinema-booking",
       status: "Complete",
-      icon: "🎬",
+      icon: Film,
       iconBg: dark ? "#2a1a0a" : "#fff3e8",
     },
   ];
@@ -409,7 +410,7 @@ export default function Home() {
                 display: "flex", alignItems: "center", justifyContent: "center",
                 fontSize: "12px",
               }}>
-                {dark ? "🌙" : "☀️"}
+                {dark ? <Moon size={14} /> : <Sun size={14} />}
               </div>
             </button>
           </div>
@@ -632,10 +633,10 @@ export default function Home() {
                 onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#f97316")}
                 onMouseLeave={(e) => (e.currentTarget.style.borderColor = borderColor)}
               >
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center text-xl mb-4"
-                  style={{ backgroundColor: p.iconBg }}>
-                  {p.icon}
-                </div>
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4"
+  style={{ backgroundColor: p.iconBg }}>
+  <p.icon size={20} style={{ color: dark ? "#888" : "#666" }} />
+</div>
                 <div className="flex items-start justify-between gap-2 mb-2">
                   <span className="text-sm font-medium">{p.name}</span>
                   <span className="shrink-0 text-xs px-2 py-0.5 rounded-full" style={{
