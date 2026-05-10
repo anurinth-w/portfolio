@@ -63,7 +63,7 @@ const EVENTS = [
     id: "hybrid-ocr",
     title: "Hybrid OCR",
     start: { year: 2026, month: 1 },
-    end: null,
+    end: { year: 2026, month: 3 },
     color: "#378ADD",
     href: "https://github.com/anurinth-w/hybrid-ocr",
     track: 2,

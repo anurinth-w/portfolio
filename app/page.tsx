@@ -14,18 +14,27 @@ const EVENTS = [
   },
   {
     id: "game-dev",
-    title: "Game Programmer · Work & Travel USA",
+    title: "Game Programmer",
     start: { year: 2022, month: 1 },
-    end: { year: 2022, month: 12 },
+    end: { year: 2023, month: 6 },
     color: "#EF9F27",
     href: null,
     track: 1,
   },
   {
+    id: "Work & Travel",
+    title: "Work & Travel USA",
+    start: { year: 2023, month: 2 },
+    end: { year: 2023, month: 4 },
+    color: "#7F77DD",
+    href: null,
+    track: 2,
+  },
+  {
     id: "graduated",
     title: "Graduated — Bangkok University",
     start: { year: 2023, month: 6 },
-    end: { year: 2023, month: 6 },
+    end: { year: 2023, month: 9 },
     color: "#1D9E75",
     href: null,
     track: 0,
@@ -62,29 +71,30 @@ const EVENTS = [
     id: "hybrid-ocr",
     title: "Hybrid OCR",
     start: { year: 2026, month: 1 },
-    end: null,
+    end: { year: 2026, month: 3 },
     color: "#378ADD",
     href: "https://github.com/anurinth-w/hybrid-ocr",
     track: 2,
   },
   {
-    id: "kayaman",
-    title: "Kayaman Shop",
-    start: { year: 2026, month: 2 },
-    end: { year: 2026, month: 4 },
-    color: "#EA6C1E",
-    href: "https://github.com/anurinth-w/kayaman-shop",
-    track: 3,
-  },
-  {
     id: "devops-assignment",
     title: "DevOps Assignment",
-    start: { year: 2026, month: 4 },
-    end: { year: 2026, month: 5 },
+    start: { year: 2026, month: 3 },
+    end: { year: 2026, month: 4 },
     color: "#7F77DD",
     href: "https://github.com/anurinth-w/devops-assignment",
-    track: 4,
+    track: 2,
   },
+  {
+    id: "kayaman",
+    title: "Kayaman Shop",
+    start: { year: 2026, month: 4 },
+    end: { year: 2026, month: 5 },
+    color: "#EA6C1E",
+    href: "https://github.com/anurinth-w/kayaman-shop",
+    track: 2,
+  },
+
 ];
 
 const TL_START_YEAR = 2020;
@@ -244,7 +254,7 @@ function TerminalAbout({ dark, mutedColor }: { dark: boolean; mutedColor: string
             height: "14px",
             verticalAlign: "middle",
             marginLeft: "1px",
-          }}/>
+          }} />
         </div>
       )}
       {done && (
@@ -255,7 +265,7 @@ function TerminalAbout({ dark, mutedColor }: { dark: boolean; mutedColor: string
           height: "14px",
           verticalAlign: "middle",
           marginLeft: "1px",
-        }}/>
+        }} />
       )}
     </div>
   );
@@ -265,11 +275,27 @@ export default function Home() {
   const [dark, setDark] = useState(true);
   const [mounted, setMounted] = useState(false);
   const [tlHovered, setTlHovered] = useState<string | null>(null);
+  const [activeSection, setActiveSection] = useState("hero");
 
   useEffect(() => { setMounted(true); }, []);
+
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
   }, [dark]);
+  useEffect(() => {                          // ← เพิ่มตรงนี้
+    const sections = ["about", "skills", "timeline", "projects", "blog"];
+    const observers = sections.map((id) => {
+      const el = document.getElementById(id);
+      if (!el) return null;
+      const observer = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) setActiveSection(id); },
+        { threshold: 0.1, rootMargin: "-40% 0px -40% 0px" }
+      );
+      observer.observe(el);
+      return observer;
+    });
+    return () => observers.forEach((o) => o?.disconnect());
+  }, [mounted]);
 
   if (!mounted) return null;
 
@@ -279,9 +305,9 @@ export default function Home() {
       desc: "Async OCR processing on AWS — S3, SQS, DynamoDB, Docker, Terraform",
       tags: ["AWS", "Docker", "Terraform"],
       href: "https://github.com/anurinth-w/hybrid-ocr",
-      status: "In Progress",
+      status: "Complete",
       icon: "⚙️",
-      iconBg: dark ? "#0a1220" : "#eff6ff",
+      iconBg: dark ? "#2a1a0a" : "#fff3e8",
     },
     {
       name: "Kayaman Shop",
@@ -299,7 +325,7 @@ export default function Home() {
       href: "https://github.com/anurinth-w/pwm-service",
       status: "In Progress",
       icon: "💧",
-      iconBg: dark ? "#0a1a18" : "#f0fdf8",
+      iconBg: dark ? "#2a1a0a" : "#fff3e8",
     },
     {
       name: "DevOps Assignment",
@@ -308,7 +334,7 @@ export default function Home() {
       href: "https://github.com/anurinth-w/devops-assignment",
       status: "Complete",
       icon: "☸️",
-      iconBg: dark ? "#1a0a2a" : "#f5f0ff",
+      iconBg: dark ? "#2a1a0a" : "#fff3e8",
     },
     {
       name: "Cinema Booking",
@@ -317,7 +343,7 @@ export default function Home() {
       href: "https://github.com/anurinth-w/cinema-booking",
       status: "Complete",
       icon: "🎬",
-      iconBg: dark ? "#1a1a0a" : "#fffbf0",
+      iconBg: dark ? "#2a1a0a" : "#fff3e8",
     },
   ];
 
@@ -342,13 +368,21 @@ export default function Home() {
         {/* Navbar */}
         <nav className="sticky top-0 z-50 flex items-center justify-between px-8 py-4 backdrop-blur-sm"
           style={{ borderBottom: `0.5px solid ${borderColor}` }}>
-          <span className="text-sm font-medium text-orange-500">anurinth.dev</span>
+          <span className="text-base font-bold tracking-wider text-orange-500"
+            style={{ textShadow: dark ? "0 0 8px rgba(234,108,30,0.8), 0 0 20px rgba(234,108,30,0.4)" : "none" }}>
+            ANURINTH<span style={{ color: dark ? "#555" : "#ccc" }}>.DEV</span>
+          </span>
           <div className="flex items-center gap-6">
             <div className="hidden sm:flex gap-6">
               {["about", "skills", "timeline", "projects", "blog"].map((item) => (
                 <a key={item} href={`#${item}`}
-                  className="text-sm hover:text-orange-500 transition-colors"
-                  style={{ color: mutedColor }}>
+                  className="text-sm transition-colors"
+                  style={{
+                    color: activeSection === item ? "#EA6C1E" : mutedColor,
+                    textShadow: activeSection === item
+                      ? "0 0 8px rgba(234,108,30,0.8), 0 0 20px rgba(234,108,30,0.4)"
+                      : "none",
+                  }}>
                   {item}
                 </a>
               ))}
@@ -450,9 +484,6 @@ export default function Home() {
         <section id="timeline" className="px-8 sm:px-16 py-12 max-w-5xl mx-auto">
           <p className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: subtleColor }}>timeline</p>
           <h2 className="text-2xl font-semibold mb-2">Career Journey</h2>
-          <p className="text-sm mb-8" style={{ color: mutedColor }}>
-            Bars show duration. Busier periods are spaced further apart.
-          </p>
           <div className="overflow-x-auto">
             <svg width="100%" viewBox={`0 0 640 ${totalHeight}`} style={{ display: "block", minWidth: "400px" }}>
 
