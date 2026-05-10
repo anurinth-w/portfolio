@@ -136,8 +136,129 @@ function toYScaled(
 }
 
 function monthLabel(year: number, month: number) {
-  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   return `${months[month - 1]} ${year}`;
+}
+
+const ABOUT_LINES = [
+  "I started as a business owner running a government contracting company_",
+  "Somewhere along the way, I got tired of watching my team do the same",
+  "manual work over and over — so I started automating it_",
+  "",
+  "That was the turning point_",
+  "",
+  "I found myself genuinely enjoying the process of understanding a broken",
+  "workflow, designing a fix, and watching it run on its own_",
+  "Not just the end result — the problem-solving itself_",
+  "",
+  `That pulled me toward [DevOps] — infrastructure, pipelines, reliability_`,
+  "Work where systems need to be thought through before they're built,",
+  "not patched after they break_",
+  "",
+  "I thrive under pressure, communicate clearly with teammates, and genuinely",
+  `enjoy the [why is this broken] part of the job_`,
+  "Currently looking for my first engineering role where I can contribute,",
+  "learn fast, and grow alongside a strong team_",
+];
+
+function TerminalAbout({ dark, mutedColor }: { dark: boolean; mutedColor: string }) {
+  const [displayed, setDisplayed] = useState<string[]>([]);
+  const [currentLine, setCurrentLine] = useState(0);
+  const [currentChar, setCurrentChar] = useState(0);
+  const [showCursor, setShowCursor] = useState(true);
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    const cursor = setInterval(() => setShowCursor(v => !v), 500);
+    return () => clearInterval(cursor);
+  }, []);
+
+  useEffect(() => {
+    if (currentLine >= ABOUT_LINES.length) { setDone(true); return; }
+    const line = ABOUT_LINES[currentLine];
+    if (line === "") {
+      setTimeout(() => {
+        setDisplayed(d => [...d, ""]);
+        setCurrentLine(l => l + 1);
+        setCurrentChar(0);
+      }, 120);
+      return;
+    }
+    if (currentChar >= line.length) {
+      setTimeout(() => {
+        setDisplayed(d => [...d, line]);
+        setCurrentLine(l => l + 1);
+        setCurrentChar(0);
+      }, 80);
+      return;
+    }
+    const speed = line[currentChar] === "_" ? 60 : 18;
+    const t = setTimeout(() => setCurrentChar(c => c + 1), speed);
+    return () => clearTimeout(t);
+  }, [currentLine, currentChar]);
+
+  const currentText = currentLine < ABOUT_LINES.length
+    ? ABOUT_LINES[currentLine].slice(0, currentChar)
+    : "";
+
+  function renderLine(line: string, key: number) {
+    const parts = line.split(/(\[.*?\]|_)/g);
+    return (
+      <div key={key} className="min-h-5">
+        {parts.map((part, i) => {
+          if (part === "_") return null;
+          if (part.startsWith("[") && part.endsWith("]")) {
+            return <span key={i} className="text-orange-500 font-medium">{part.slice(1, -1)}</span>;
+          }
+          return <span key={i}>{part}</span>;
+        })}
+      </div>
+    );
+  }
+
+  return (
+    <div style={{
+      fontFamily: "'Courier New', Courier, monospace",
+      fontSize: "14px",
+      lineHeight: "1.8",
+      color: mutedColor,
+      maxWidth: "640px",
+    }}>
+      {displayed.map((line, i) => renderLine(line, i))}
+      {!done && (
+        <div className="min-h-5">
+          {(() => {
+            const parts = currentText.split(/(\[.*?\]|_)/g);
+            return parts.map((part, i) => {
+              if (part === "_") return null;
+              if (part.startsWith("[") && part.endsWith("]")) {
+                return <span key={i} className="text-orange-500 font-medium">{part.slice(1, -1)}</span>;
+              }
+              return <span key={i}>{part}</span>;
+            });
+          })()}
+          <span style={{
+            display: "inline-block",
+            width: "8px",
+            backgroundColor: showCursor ? "#EA6C1E" : "transparent",
+            height: "14px",
+            verticalAlign: "middle",
+            marginLeft: "1px",
+          }}/>
+        </div>
+      )}
+      {done && (
+        <span style={{
+          display: "inline-block",
+          width: "8px",
+          backgroundColor: showCursor ? "#EA6C1E" : "transparent",
+          height: "14px",
+          verticalAlign: "middle",
+          marginLeft: "1px",
+        }}/>
+      )}
+    </div>
+  );
 }
 
 export default function Home() {
@@ -282,6 +403,18 @@ export default function Home() {
 
         <div className="mx-8 sm:mx-16" style={{ borderTop: `0.5px solid ${borderColor}` }} />
 
+        {/* About */}
+        <section id="about" className="px-8 sm:px-16 py-12 max-w-5xl mx-auto">
+          <p className="text-xs font-medium uppercase tracking-widest mb-6" style={{ color: subtleColor }}>
+            about
+          </p>
+          <TerminalAbout dark={dark} mutedColor={mutedColor} />
+        </section>
+
+        {/* Divider */}
+        <div className="mx-8 sm:mx-16" style={{ borderTop: `0.5px solid ${borderColor}` }} />
+
+
         {/* Stats + Skills */}
         <section id="skills" className="px-8 sm:px-16 py-12 max-w-5xl mx-auto">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
@@ -329,7 +462,7 @@ export default function Home() {
                 return (
                   <g key={yr}>
                     <line x1={LEFT_AXIS} y1={y} x2={LABEL_X - 10} y2={y}
-                      stroke={dark ? "#1a1a1a" : "#ede9e0"} strokeWidth="1"/>
+                      stroke={dark ? "#1a1a1a" : "#ede9e0"} strokeWidth="1" />
                     <text x={LEFT_AXIS - 8} y={y + 4} textAnchor="end"
                       style={{ fontSize: "11px", fill: subtleColor, fontFamily: "sans-serif", fontWeight: 500 }}>
                       {yr}
@@ -340,7 +473,7 @@ export default function Home() {
 
               {/* Spine */}
               <line x1={LEFT_AXIS} y1={40} x2={LEFT_AXIS} y2={totalHeight - 20}
-                stroke={borderColor} strokeWidth="1.5"/>
+                stroke={borderColor} strokeWidth="1.5" />
 
               {/* Now line */}
               {(() => {
@@ -348,7 +481,7 @@ export default function Home() {
                 return (
                   <g>
                     <line x1={LEFT_AXIS} y1={nowY} x2={LABEL_X - 10} y2={nowY}
-                      stroke="#EA6C1E" strokeWidth="1" strokeDasharray="3 3" opacity="0.5"/>
+                      stroke="#EA6C1E" strokeWidth="1" strokeDasharray="3 3" opacity="0.5" />
                     <text x={LEFT_AXIS - 8} y={nowY + 4} textAnchor="end"
                       style={{ fontSize: "10px", fill: "#EA6C1E", fontFamily: "sans-serif", fontWeight: 600 }}>
                       now
@@ -359,7 +492,7 @@ export default function Home() {
 
               {/* Divider */}
               <line x1={LABEL_X - 16} y1={30} x2={LABEL_X - 16} y2={totalHeight - 20}
-                stroke={borderColor} strokeWidth="0.5" strokeDasharray="3 3"/>
+                stroke={borderColor} strokeWidth="0.5" strokeDasharray="3 3" />
 
               {/* Events */}
               {EVENTS.map((ev, index) => {
@@ -384,19 +517,19 @@ export default function Home() {
                     {isMilestone ? (
                       <>
                         <circle cx={barX + TRACK_WIDTH / 2} cy={startY} r={6}
-                          fill={bgColor} stroke={ev.color} strokeWidth={2}/>
-                        <circle cx={barX + TRACK_WIDTH / 2} cy={startY} r={3} fill={ev.color}/>
+                          fill={bgColor} stroke={ev.color} strokeWidth={2} />
+                        <circle cx={barX + TRACK_WIDTH / 2} cy={startY} r={3} fill={ev.color} />
                       </>
                     ) : (
                       <>
                         <rect x={barX} y={startY} width={TRACK_WIDTH} height={barH} rx={3}
                           fill={ev.color} fillOpacity={isHovered ? 0.5 : 0.2}
-                          stroke={ev.color} strokeWidth={isHovered ? 1.5 : 0.8}/>
-                        <circle cx={barX + TRACK_WIDTH / 2} cy={startY} r={3} fill={ev.color}/>
+                          stroke={ev.color} strokeWidth={isHovered ? 1.5 : 0.8} />
+                        <circle cx={barX + TRACK_WIDTH / 2} cy={startY} r={3} fill={ev.color} />
                         {isOngoing
                           ? <circle cx={barX + TRACK_WIDTH / 2} cy={endY} r={3}
-                              fill={ev.color} fillOpacity={0.3} stroke={ev.color} strokeWidth={1.5}/>
-                          : <circle cx={barX + TRACK_WIDTH / 2} cy={endY} r={2.5} fill={ev.color}/>
+                            fill={ev.color} fillOpacity={0.3} stroke={ev.color} strokeWidth={1.5} />
+                          : <circle cx={barX + TRACK_WIDTH / 2} cy={endY} r={2.5} fill={ev.color} />
                         }
                       </>
                     )}
@@ -405,13 +538,15 @@ export default function Home() {
                       d={`M${barX + TRACK_WIDTH} ${midBarY} L${LABEL_X - 18} ${midBarY} L${LABEL_X - 18} ${labelY + 6} L${LABEL_X} ${labelY + 6}`}
                       fill="none" stroke={ev.color}
                       strokeWidth={isHovered ? 1.5 : 0.5}
-                      opacity={isHovered ? 1 : 0.35}/>
+                      opacity={isHovered ? 1 : 0.35} />
 
-                    <circle cx={LABEL_X - 6} cy={labelY + 6} r={2.5} fill={ev.color} opacity={0.7}/>
+                    <circle cx={LABEL_X - 6} cy={labelY + 6} r={2.5} fill={ev.color} opacity={0.7} />
 
                     <text x={LABEL_X + 4} y={labelY + 4}
-                      style={{ fontSize: "12px", fill: isHovered ? ev.color : textColor,
-                        fontFamily: "sans-serif", fontWeight: isHovered ? 500 : 400, dominantBaseline: "middle" }}>
+                      style={{
+                        fontSize: "12px", fill: isHovered ? ev.color : textColor,
+                        fontFamily: "sans-serif", fontWeight: isHovered ? 500 : 400, dominantBaseline: "middle"
+                      }}>
                       {ev.title}{ev.href ? " ↗" : ""}
                     </text>
                     <text x={LABEL_X + 4} y={labelY + 20}
@@ -422,7 +557,7 @@ export default function Home() {
 
                     {isHovered && (
                       <rect x={LABEL_X - 8} y={labelY - 4} width={400} height={32} rx={4}
-                        fill={ev.color} fillOpacity={0.06}/>
+                        fill={ev.color} fillOpacity={0.06} />
                     )}
                   </g>
                 );
