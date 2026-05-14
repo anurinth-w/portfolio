@@ -228,6 +228,10 @@ function TerminalAbout({ dark, mutedColor }: { dark: boolean; mutedColor: string
     );
   }
 
+
+  const totalLines = ABOUT_LINES.length;
+  const lineHeight = 14 * 1.8; // fontSize * lineHeight
+  const estimatedHeight = totalLines * lineHeight;
   return (
     <div style={{
       fontFamily: "'Courier New', Courier, monospace",
@@ -235,6 +239,7 @@ function TerminalAbout({ dark, mutedColor }: { dark: boolean; mutedColor: string
       lineHeight: "1.8",
       color: mutedColor,
       maxWidth: "640px",
+      minHeight: `${estimatedHeight}px`,
     }}>
       {displayed.map((line, i) => renderLine(line, i))}
       {!done && (
@@ -417,45 +422,95 @@ export default function Home() {
         </nav>
 
         {/* Hero */}
+        {/* Hero */}
         <section className="px-8 sm:px-16 py-20 max-w-5xl mx-auto">
-          <div className="inline-flex items-center gap-2 text-xs px-3 py-1 rounded-full mb-6"
-            style={{ backgroundColor: dark ? "#2a1a0a" : "#fff3e8", color: dark ? "#f09050" : "#c45610" }}>
-            <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-            open to work
-          </div>
-          <h1 className="text-4xl sm:text-5xl font-semibold leading-tight mb-3">
-            Anurinth <span className="text-orange-500">W.</span>
-          </h1>
-          <p className="text-lg mb-5" style={{ color: mutedColor }}>DevOps & Full-Stack Engineer</p>
-          <p className="text-base leading-relaxed max-w-md mb-8" style={{ color: mutedColor }}>
-            I build and ship systems that actually run — from serverless APIs to cloud infrastructure.
-            Currently focused on DevOps, automation, and making things reliable at scale.
-          </p>
-          <div className="flex flex-wrap gap-3 mb-8">
-            <a href="/resume.pdf" download="Anurinth_Wichairum_Resume_2026.pdf"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium transition-colors">
-              ↓&#xFE0E; download resume
-            </a>
-            <a href="mailto:anurinth.w@gmail.com"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm transition-colors hover:border-orange-400"
-              style={{ border: `0.5px solid ${borderColor}`, color: dark ? "#ccc" : "#444" }}>
-              ✉&#xFE0E get in touch
-            </a>
-          </div>
-          <div className="flex gap-5">
-            {[
-              { label: "github", href: "https://github.com/anurinth-w" },
-              { label: "linkedin", href: "https://www.linkedin.com/in/anurinth-wichairum-494ab03b0/" },
-            ].map((s) => (
-              <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
-                className="text-sm hover:text-orange-500 transition-colors"
-                style={{ color: subtleColor }}>
-                {s.label} ↗&#xFE0E;
-              </a>
-            ))}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-12">
+            {/* Left — text content */}
+            <div className="flex-1">
+              <div className="inline-flex items-center gap-2 text-xs px-3 py-1 rounded-full mb-6"
+                style={{ backgroundColor: dark ? "#2a1a0a" : "#fff3e8", color: dark ? "#f09050" : "#c45610" }}>
+                <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+                open to work
+              </div>
+              <h1 className="text-4xl sm:text-5xl font-semibold leading-tight mb-3">
+                Anurinth <span className="text-orange-500">W.</span>
+              </h1>
+              <p className="text-lg mb-5" style={{ color: mutedColor }}>DevOps & Full-Stack Engineer</p>
+              <p className="text-base leading-relaxed max-w-md mb-8" style={{ color: mutedColor }}>
+                I build and ship systems that actually run — from serverless APIs to cloud infrastructure.
+                Currently focused on DevOps, automation, and making things reliable at scale.
+              </p>
+              <div className="flex flex-wrap gap-3 mb-8">
+                <a href="/resume.pdf" download="Anurinth_Wichairum_Resume_2026.pdf"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium transition-colors">
+                  ↓&#xFE0E; download resume
+                </a>
+                <a href="mailto:anurinth.w@gmail.com"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm transition-colors hover:border-orange-400"
+                  style={{ border: `0.5px solid ${borderColor}`, color: dark ? "#ccc" : "#444" }}>
+                  {"\u2709\uFE0E"} get in touch
+                </a>
+              </div>
+              <div className="flex gap-5">
+                {[
+                  { label: "github", href: "https://github.com/anurinth-w" },
+                  { label: "linkedin", href: "https://www.linkedin.com/in/anurinth-wichairum-494ab03b0/" },
+                ].map((s) => (
+                  <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
+                    className="text-sm hover:text-orange-500 transition-colors"
+                    style={{ color: subtleColor }}>
+                    {s.label} {"\u2197\uFE0E"}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Right — avatar */}
+            <div className="shrink-0 flex items-center justify-center sm:justify-end w-full sm:w-auto">
+              <div className="relative" style={{ width: 200, height: 200 }}>
+                {/* Rotating conic-gradient ring */}
+                <div style={{
+                  position: "absolute", inset: -4,
+                  borderRadius: "50%",
+                  background: "conic-gradient(from 0deg, #EA6C1E, #f97316, #fbbf24, #EA6C1E)",
+                  animation: "spin 6s linear infinite",
+                  zIndex: 0,
+                }} />
+                {/* Glow */}
+                <div style={{
+                  position: "absolute", inset: -8,
+                  borderRadius: "50%",
+                  background: "radial-gradient(circle, rgba(234,108,30,0.25) 0%, transparent 70%)",
+                  animation: "pulse-glow 3s ease-in-out infinite",
+                  zIndex: 0,
+                }} />
+                {/* White gap ring */}
+                <div style={{
+                  position: "absolute", inset: -1,
+                  borderRadius: "50%",
+                  backgroundColor: dark ? "#0e0e0e" : "#faf8f4",
+                  zIndex: 1,
+                }} />
+                {/* Photo */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/avatar.jpg"
+                  alt="Anurinth W."
+                  style={{
+                    position: "absolute", inset: 4,
+                    width: "calc(100% - 8px)",
+                    height: "calc(100% - 8px)",
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                    objectPosition: "center top",
+                    zIndex: 2,
+                  }}
+                />
+              </div>
+            </div>
           </div>
         </section>
-
+        
         <div className="mx-8 sm:mx-16" style={{ borderTop: `0.5px solid ${borderColor}` }} />
 
         {/* About */}
@@ -599,7 +654,7 @@ export default function Home() {
                         fontSize: "12px", fill: isHovered ? ev.color : textColor,
                         fontFamily: "sans-serif", fontWeight: isHovered ? 500 : 400, dominantBaseline: "middle"
                       }}>
-                      {ev.title}{ev.href ? " ↗&#xFE0E;" : ""}
+                      {ev.title}{ev.href ? " \u2197\uFE0E" : ""}
                     </text>
                     <text x={LABEL_X + 4} y={labelY + 20}
                       style={{ fontSize: "10px", fill: subtleColor, fontFamily: "sans-serif", dominantBaseline: "middle" }}>
@@ -634,9 +689,9 @@ export default function Home() {
                 onMouseLeave={(e) => (e.currentTarget.style.borderColor = borderColor)}
               >
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4"
-  style={{ backgroundColor: p.iconBg }}>
-  <p.icon size={20} style={{ color: dark ? "#888" : "#666" }} />
-</div>
+                  style={{ backgroundColor: p.iconBg }}>
+                  <p.icon size={20} style={{ color: dark ? "#888" : "#666" }} />
+                </div>
                 <div className="flex items-start justify-between gap-2 mb-2">
                   <span className="text-sm font-medium">{p.name}</span>
                   <span className="shrink-0 text-xs px-2 py-0.5 rounded-full" style={{
@@ -691,7 +746,7 @@ export default function Home() {
                 <a key={s.label} href={s.href}
                   className="text-xs hover:text-orange-500 transition-colors"
                   style={{ color: subtleColor }}>
-                  {s.label} ↗&#xFE0E;
+                  {s.label} {"\u2197\uFE0E"}
                 </a>
               ))}
             </div>
